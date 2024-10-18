@@ -5,18 +5,18 @@ class Player
 
   class << self
 
-    def create_player(attrs)
-      user_name = attrs[:name]
-      deck = attrs[:deck]
+    def create_player(args)
+      user_name = args[:name]
+      deck = args[:deck]
       cards = deck.take_cards(2)
 
       new(name: user_name, cards: cards)
     end
   end
 
-  def initialize(attrs)
-    @name = attrs[:name]
-    @cards = attrs[:cards]
+  def initialize(args)
+    @name = args[:name]
+    @cards = args[:cards]
     @cash = 100
   end
 

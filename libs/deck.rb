@@ -32,18 +32,16 @@ class Deck
   end
 
   def take_cards(count)
-    add_and_remove = proc do |acc, element|
-      if acc.length < count
-        acc << element
-        @cards.delete_at(@cards.index(element))
-        acc
-      else
-        acc
-      end
-    end
+    result = @cards.sample(count)
 
-    result = @cards.inject([], &add_and_remove)
+    remove_elements(result)
 
-    count == 1 ? result.first : result
+    result
+  end
+
+  private
+
+  def remove_elements(elements)
+    elements.each { |element| @cards.delete(element) }
   end
 end

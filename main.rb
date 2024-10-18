@@ -1,8 +1,7 @@
 require_relative 'libs/player'
 require_relative 'libs/deck'
+require_relative 'libs/game'
 
-deck = Deck.create_deck
+game = Game.create_game('vasya')
 
-player = Player.create_player(name: 'vasya', deck: deck)
-
-puts player.points_amount(deck).inspect
+game.start
