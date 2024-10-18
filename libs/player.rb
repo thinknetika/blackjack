@@ -4,14 +4,11 @@ class Player
   attr_accessor :name, :cards, :cash
 
   class << self
-    def take_cards(deck)
-      deck.take_cards
-    end
 
     def create_player(*attrs)
       user_name = attrs[name]
       deck = attrs[deck]
-      cards = take_cards(deck)
+      cards = deck.take_cards(2)
 
       new(name: user_name, cards: cards)
     end
@@ -28,6 +25,6 @@ class Player
   end
 
   def take_card(deck)
-    deck.take_card
+    deck.take_cards(1)
   end
 end
