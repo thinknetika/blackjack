@@ -1,16 +1,19 @@
+# frozen_string_literal: true
+
+require_relative '../modules/logic'
+
 class Player
-  # include Logic
+  include Logic
 
   attr_accessor :name, :cards, :cash
 
   class << self
-
     def create_player(args)
       user_name = args[:name]
       deck = args[:deck]
       cards = deck.take_cards(2)
 
-      new(name: user_name, cards: cards)
+      new(name: user_name, cards:)
     end
   end
 
@@ -25,6 +28,6 @@ class Player
   end
 
   def take_card(deck)
-    deck.take_cards(1)
+    @cards.concat(deck.take_cards(1))
   end
 end

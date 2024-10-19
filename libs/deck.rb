@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Deck
   RANK_VALUE = {
     '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9, '10' => 10,
@@ -13,7 +15,7 @@ class Deck
 
       SUITS.each do |suit|
         RANKS.each do |rank|
-          cards << { suit: suit, rank: rank }
+          cards << { suit:, rank: }
         end
       end
 
