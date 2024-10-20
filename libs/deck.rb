@@ -29,10 +29,6 @@ class Deck
     @cards = cards
   end
 
-  def count_points(cards)
-    cards.sum { |card| RANK_VALUE[card[:rank]] }
-  end
-
   def take_cards(count)
     result = @cards.sample(count)
 

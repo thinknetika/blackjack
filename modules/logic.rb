@@ -4,7 +4,7 @@ module Logic
   DEALER_MAX_RATE = 18
 
   def decision(deck)
-    cards_point = points_amount(deck)
+    cards_point = points_amount
     if cards_point < DEALER_MAX_RATE
       puts 'Дилер пропустил ход'
     else

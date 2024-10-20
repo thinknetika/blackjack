@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
+require_relative '../modules/player_menu'
+
 class Game
+  include PlayerMenu
+
   attr_accessor :player, :dealer, :deck, :current_gamer
+  attr_writer :round_finish
 
   class << self
     def create_game(name)
-      user_name = name
+      name = name
       deck = Deck.create_deck
-      player = Player.create_player(user_name:, deck:)
-      dealer = Player.create_player(user_name: 'Dealer', deck:)
+      player = Player.create_player(name:, deck:)
+      dealer = Player.create_player(name: 'Dealer', deck:)
 
       new(player:, dealer:, deck:)
     end
@@ -19,6 +24,7 @@ class Game
     @dealer = args[:dealer]
     @deck = args[:deck]
     @current_gamer = @player
+    @finish_round = false
   end
 
   def start
@@ -27,10 +33,13 @@ class Game
         player_menu
       else
         @dealer.decision(@deck)
-        change_player
       end
 
-      finish_game if cards_count? || overkill?
+      if cards_count? || overkill? || round_finish?
+        finish_round
+        next
+      end
+      change_player
     end
   end
 
@@ -40,32 +49,7 @@ class Game
 
   private
 
-  def player_menu
-    puts "Ваши карты: #{@player.cards}, сумма ваших очков: #{@player.points_amount(@deck)} "
-
-    puts
-    puts 'Ваши действия: 1 - пропустить ход, 2 - взять карту, 3 - открыть карты'
-
-    p 'Выберите действие:'
-    begin
-      choice = Integer(gets)
-      check_choice(choice)
-    rescue ArgumentError
-      puts 'Выберите из предложенных вариантов'
-      retry
-    end
-
-    case choice
-    when 2
-      return puts 'У вас максимальное количество карт' if @player.cards.count == 3
-
-      @player.take_card(@deck)
-    when 3
-      finish_game
-    end
-
-    change_player
-  end
+  #alias_method :next_player, :change_player
 
   def change_player
     @current_gamer = if @current_gamer == @player
@@ -79,31 +63,56 @@ class Game
     raise ArgumentError unless (1..3).include?(choice)
   end
 
-  def finish_game
+  def finish_round
     open_cards
 
-    player_points = deck.count_points(@player.cards)
-    dealer_points = deck.count_points(@dealer.cards)
+    player_points = @player.count_points
+    dealer_points = @dealer.count_points
 
     puts "Ваши очки: #{player_points}"
     puts "Очки дилера: #{dealer_points}"
 
-    if player_points > dealer_points && player_points <= 21
-      puts 'player win!'
-    elsif dealer_points > player_points && @dealer <= 21
-      puts 'dealer win'
-    else
-      puts 'tie'
+    if overkill?
+      change_player
+      winner(@current_gamer)
+
+      self.class.create_game(@player.name)
     end
-    abort 'Игра завершена'
+
+    if player_points > dealer_points
+      winner(@player)
+        elsif player_points == dealer_points
+      puts 'tie'
+    else
+      winner(@dealer)
+    end
+
+    next_round
   end
 
   def overkill?
-    deck.count_points(@current_gamer.cards) > 21
+    @current_gamer.count_points > 21
   end
+
 
   def open_cards
     puts @player.cards
     puts @dealer.cards
+  end
+
+  def winner(player)
+    puts "#{player.name} win"
+  end
+
+  def next_round
+    @player.drop_cards(@deck)
+    @dealer.drop_cards((@deck))
+    puts 'Новый раунд'
+    @current_gamer = @player
+    @round_finish = false
+  end
+
+  def round_finish?
+    @round_finish
   end
 end
