@@ -75,8 +75,6 @@ class Game
     if overkill?
       change_player
       winner(@current_gamer)
-
-      self.class.create_game(@player.name)
     end
 
     if player_points > dealer_points
