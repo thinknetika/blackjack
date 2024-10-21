@@ -3,7 +3,8 @@ module PlayerMenu
     puts "Ваши карты: #{@player.cards}, сумма ваших очков: #{@player.points_amount} "
 
     puts
-    puts 'Ваши действия: 1 - пропустить ход, 2 - взять карту, 3 - открыть карты'
+    take = cards.count < 3 ? '2 - взять карту, ' : ''
+    puts "Ваши действия: 1 - пропустить ход, #{take}3 - открыть карты"
 
     p 'Выберите действие:'
     begin
@@ -18,9 +19,13 @@ module PlayerMenu
     when 2
       return puts 'У вас максимальное количество карт' if @player.cards.count == 3
 
-      @player.take_card(@deck)
+      @player.take_cards(@deck, 1)
     when 3
-      @round_finish = true
+      @round_finished = true
     end
+  end
+
+  def check_choice(choice)
+    raise ArgumentError unless (1..3).include?(choice)
   end
 end

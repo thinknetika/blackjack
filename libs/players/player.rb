@@ -1,35 +1,21 @@
 # frozen_string_literal: true
 
-require_relative '../modules/logic'
-
 class Player
-  include Logic
-
   attr_accessor :name, :cards, :cash, :points
 
-  class << self
-    def create_player(args)
-      user_name = args[:name]
-      deck = args[:deck]
-      cards = deck.take_cards(2)
-
-      new(name: user_name, cards:)
-    end
-  end
-
-  def initialize(args)
-    @name = args[:name]
-    @cards = args[:cards]
+  def initialize(name)
+    @name = name
+    @cards = []
     @cash = 100
-    @points = count_points
+    @points = 0
   end
 
   def points_amount
     count_points
   end
 
-  def take_card(deck)
-    @cards.concat(deck.take_cards(1))
+  def take_cards(deck, count)
+    @cards.concat(deck.take_cards(count))
   end
 
   def count_points
