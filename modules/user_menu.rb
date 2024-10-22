@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module UserMenu
-  def player_menu
-    puts "Ваши карты: #{@user.cards}, сумма ваших очков: #{@user.points_amount} "
+  def menu(deck)
+    puts "Ваши карты: #{cards}, сумма ваших очков: #{points_amount} "
 
     puts
     take = cards.count < 3 ? '2 - взять карту, ' : ''
@@ -19,11 +19,11 @@ module UserMenu
 
     case choice
     when 2
-      return puts 'У вас максимальное количество карт' if @user.cards.count == 3
+      return puts 'У вас максимальное количество карт' if cards.count == 3
 
-      take_cards(@deck, 1)
+      take_cards(deck, 1)
     when 3
-      @open_card = true
+      @open_cards = true
     end
   end
 

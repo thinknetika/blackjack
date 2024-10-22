@@ -3,8 +3,8 @@
 class Dealer < Player
   DEALER_MAX_RATE = 18
 
-  def play
-    decision(@deck)
+  def play(deck)
+    decision(deck)
   end
 
   def decision(deck)

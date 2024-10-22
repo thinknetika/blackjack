@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require_relative 'libs/players/player'
+require_relative 'libs/players/user'
+require_relative 'libs/players/dealer'
+require_relative 'libs/round'
 require_relative 'libs/deck'
 require_relative 'libs/game'
-require_relative 'modules//player_menu'
 
 puts 'Введите свое имя: '
 

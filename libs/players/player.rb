@@ -6,12 +6,21 @@ class Player
   def initialize(name)
     @name = name
     @cards = []
-    @cash = 100
+    @bank = 100
     @points = 0
+    @open_cards = false
   end
 
   def points_amount
     count_points
+  end
+
+  def count_points
+    @points = cards.sum { |card| Deck::RANK_VALUE[card[:rank]] }
+
+    @points -= 10 if include_ace && points > 21
+
+    @points
   end
 
   def take_cards(deck, count)
@@ -34,17 +43,22 @@ class Player
     end
   end
 
+  def drop
+    @cards = []
+    @bank = 100
+    @points = 0
+    @open_cards = false
+  end
+
+  def open_cards?
+    @open_cards
+  end
+
   after_action :count_points, :take_cards
 
   private
 
   def include_ace
     @cards.any? { |card| card[:rank] == 'Ace' }
-  end
-
-  def count_points
-    @points = cards.sum { |card| Deck::RANK_VALUE[card[:rank]] }
-
-    @points -= 10 if include_ace && points > 21
   end
 end

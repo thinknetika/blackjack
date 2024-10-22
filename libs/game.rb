@@ -13,8 +13,8 @@ class Game
     end
   end
 
-  def initialize(*attrs)
-    @round = Round.new(*attrs)
+  def initialize(args)
+    @round = Round.new(args)
   end
 
   def start
@@ -30,7 +30,7 @@ class Game
         retry
       end
 
-      next unless choice.zero?
+      next unless choice == '0'
 
       puts 'Вы закнчили игру'
       abort

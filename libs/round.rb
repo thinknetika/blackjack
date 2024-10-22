@@ -6,34 +6,40 @@ require_relative '../modules/user_menu'
 class Round
   @@round_count = 0
 
-  attr_reader :user, :dealer, :deck, :winner, :loser
+  attr_reader :user, :dealer, :deck, :winner, :loser, :open_cards
 
-  def initialize(user, dealer, deck)
-    @user = user
-    @dealer = dealer
-    @deck = deck
+  def initialize(args)
+    @user = args[:user]
+    @dealer = args[:dealer]
+    @deck = args[:deck]
     @round_finished = false
   end
 
   def start
-    reinitialize_players unless @@round_count > 0
+    reinitialize_players if @@round_count > 0
+
     @user.take_cards(deck, 2)
     @dealer.take_cards(deck, 2)
 
-    while round_finished?
-      @user.play
-      @dealer.play
+    until round_finished?
+      @user.play(@deck)
+      @dealer.play(@deck)
     end
 
     determine_winner
+
     @@round_count += 1
     return
   end
 
   private
 
+  def reinitialize_players
+    [@user, @dealer].each { |player| player.drop }
+  end
+
   def round_finished?
-    @user.open_card? || overkill? || round_ended?
+    @user.open_cards? || overkill? || round_ended?
   end
 
   def determine_winner
