@@ -18,7 +18,7 @@ class Player
   def count_points
     @points = cards.sum { |card| Deck::RANK_VALUE[card[:rank]] }
 
-    @points -= 10 if include_ace && points > 21
+    @points -= 10 if include_ace? && points > 21
 
     @points
   end
@@ -58,7 +58,7 @@ class Player
 
   private
 
-  def include_ace
-    @cards.any? { |card| card[:rank] == 'Ace' }
+  def include_ace?
+    @cards.any? { |card| card[:rank] == Deck::RANK_VALUE_EXCEPTION }
   end
 end

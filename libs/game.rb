@@ -33,7 +33,7 @@ class Game
 
       next unless choice == '0'
 
-      puts 'Вы закнчили игру'
+      puts 'Вы закончили игру'
       abort
     end
   end
