@@ -3,6 +3,13 @@
 class Dealer < Player
   DEALER_MAX_RATE = 18
 
+  attr_writer :hidden_cards
+
+  def initialize(name)
+    @hidden_cards = true
+    super
+  end
+
   def play(deck)
     decision(deck)
   end
@@ -15,5 +22,15 @@ class Dealer < Player
       take_cards(deck, 1)
       puts 'Дилер взял ход'
     end
+  end
+
+  def hidden_card?
+    @hidden_cards
+  end
+
+  def drop
+    @hidden_cards = true
+
+    super
   end
 end

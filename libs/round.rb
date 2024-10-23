@@ -2,16 +2,16 @@
 
 require_relative '../modules/user_menu'
 
-# Класс для представления раунда
 class Round
   @@round_count = 0
 
-  attr_reader :user, :dealer, :deck, :winner, :loser, :open_cards
+  attr_reader :user, :dealer, :deck, :winner, :loser, :open_cards, :console
 
   def initialize(args)
     @user = args[:user]
     @dealer = args[:dealer]
     @deck = args[:deck]
+    @console = args[:console]
     @round_finished = false
   end
 
@@ -22,6 +22,8 @@ class Round
     @dealer.take_cards(deck, 2)
 
     until round_finished?
+      @console.draw(@user)
+      @console.draw(@dealer)
       @user.play(@deck)
       @dealer.play(@deck)
     end
@@ -35,7 +37,7 @@ class Round
   private
 
   def reinitialize_players
-    [@user, @dealer].each { |player| player.drop }
+    [@user, @dealer].each(&:drop)
   end
 
   def round_finished?
@@ -43,7 +45,9 @@ class Round
   end
 
   def determine_winner
+    @dealer.hidden_cards = false
     @winner = verify_overkill
+
 
     @winner ||= if @user.points > @dealer.points
                   @user
@@ -56,6 +60,10 @@ class Round
     @loser = @winner == @user ? @dealer : @user
 
     transfer_bank(@winner, @loser)
+
+    @console.draw(@user)
+    @console.draw(@dealer)
+    @console.win(@winner)
   end
 
   def transfer_bank(winner, loser)

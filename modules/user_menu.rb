@@ -2,9 +2,6 @@
 
 module UserMenu
   def menu(deck)
-    puts "Ваши карты: #{cards}, сумма ваших очков: #{points_amount} "
-
-    puts
     take = cards.count < 3 ? '2 - взять карту, ' : ''
     puts "Ваши действия: 1 - пропустить ход, #{take}3 - открыть карты"
 

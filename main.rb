@@ -3,7 +3,7 @@
 require_relative 'libs/players/player'
 require_relative 'libs/players/user'
 require_relative 'libs/players/dealer'
-require_relative 'libs/round'
+require_relative 'libs/console'
 require_relative 'libs/deck'
 require_relative 'libs/game'
 

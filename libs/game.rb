@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 require_relative '../modules/user_menu'
+require_relative '../libs/round'
 
 class Game
   class << self
     def create_game(name)
       deck = Deck.create_deck
-      user = User.new(name:)
-      dealer = Dealer.new(name: 'Dealer')
-
-      new(user:, dealer:, deck:)
+      user = User.new(name)
+      dealer = Dealer.new('Dealer')
+      console = Console.new
+      new(user:, dealer:, deck:, console:)
     end
   end
 
